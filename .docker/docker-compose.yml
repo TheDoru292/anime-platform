@@ -1,0 +1,36 @@
+version: "1.0"
+
+services:
+  frontend:
+    container_name: frontend-node-js
+    build:
+      context: ../frontend
+    volumes:
+      - ../frontend:/usr/src/frontend
+    ports:
+      - "5173:5173"
+
+  backend:
+    container_name: backend-node-js
+    volumes:
+      - ../backend:/usr/src/backend
+    build:
+      context: ../backend
+    ports:
+      - "5001:5001"
+
+  nginx:
+    container_name: nginx
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27012:27017"

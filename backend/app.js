@@ -1,5 +1,7 @@
 const http = require("http");
+const debug = require("debug");
 const express = require("express");
+const createError = require("http-errors");
 const path = require("path");
 const logger = require("morgan");
 
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 app.use(function (err, req, res, next) {
+  console.log(err);
   res.status(err.status || 500);
   return res.json({
     success: false,

@@ -1,6 +1,7 @@
 .docker/data
 
 backend/node_modules
+backend/.env
 
 # Logs
 frontend/logs

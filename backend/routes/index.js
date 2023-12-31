@@ -10,9 +10,12 @@ db.on("error", console.error.bind(console, "mongo connection error"));
 
 const authRouter = require("./auth");
 const animeTypeRouter = require("./animetype");
+const animeGenreRouter = require("./animegenre");
 
 router.use("/auth", authRouter);
 
 router.use("/anime-type", animeTypeRouter);
+
+router.use("/anime-genre", animeGenreRouter);
 
 module.exports = router;

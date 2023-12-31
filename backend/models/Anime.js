@@ -12,6 +12,7 @@ const AnimeSchema = new Schema({
   synopsys: { type: String },
   episodes: { type: Number },
   duration: { type: Number },
+  ratings: { type: String },
   alternativeTitles: { type: Object },
   airDate: { type: Object },
   relations: { type: Object },

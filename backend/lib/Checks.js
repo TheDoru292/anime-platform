@@ -1,5 +1,7 @@
 const Type = require("../models/AnimeType");
 const Genre = require("../models/AnimeGenre");
+const Theme = require("../models/AnimeTheme");
+const Anime = require("../models/Anime");
 
 exports.checkAnimeType = (req, res, next) => {
   if (req.body.type) {
@@ -43,6 +45,8 @@ exports.checkAnimeGenres = (req, res, next) => {
         });
     }
   }
+
+  next();
 };
 
 exports.checkAnimeThemes = (req, res, next) => {
@@ -65,4 +69,31 @@ exports.checkAnimeThemes = (req, res, next) => {
         });
     }
   }
+
+  next();
+};
+
+exports.checkAnimeRelations = (req, res, next) => {
+  if (req.body.relations) {
+    for (const key in req.body.relations) {
+      for (let i = 0; req.body.relations[key].length > i; i++) {
+        if (key == "adaptation") {
+          // Check if Manga exists in the database
+        } else {
+          Anime.findOne({ _id: req.body.relations[key][i] })
+            .then((anime) => {
+              if (!anime) {
+                return res.status(400).json({
+                  success: false,
+                  error: "Anime in relations does not exist",
+                });
+              }
+            })
+            .catch((err) => next(err));
+        }
+      }
+    }
+  }
+
+  next();
 };

@@ -9,6 +9,7 @@ const AnimeSchema = new Schema({
   themes: [{ type: Schema.Types.ObjectId, ref: "AnimeTheme" }],
   status: { type: String, required: true },
   broadcast: { type: String },
+  source: { type: String },
   synopsys: { type: String },
   episodes: { type: Number },
   duration: { type: Number },

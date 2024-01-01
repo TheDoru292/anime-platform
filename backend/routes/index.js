@@ -12,8 +12,11 @@ const authRouter = require("./auth");
 const animeTypeRouter = require("./animetype");
 const animeGenreRouter = require("./animegenre");
 const animeThemeRouter = require("./animetheme");
+const animeRouter = require("./anime");
 
 router.use("/auth", authRouter);
+
+router.use("/anime", animeRouter);
 
 router.use("/anime-type", animeTypeRouter);
 

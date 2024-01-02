@@ -130,6 +130,10 @@ exports.addEntry = [
       });
     }
 
+    if (req.body.score > 10 || req.body.score < 0) {
+      return res.json({ success: false, messages: "Please check the score." });
+    }
+
     if (req.body.status == "Completed") {
       req.body.episodes = anime.episodes;
     }
@@ -142,6 +146,7 @@ exports.addEntry = [
         anime: req.params.animeId,
         episodes: req.body.episodes,
         status: req.body.status,
+        score: req.body.score,
         time,
       })
         .then((animeEntry) => {
@@ -157,6 +162,7 @@ exports.addEntry = [
           user: req.user,
           anime: req.params.animeId,
           episodes: req.body.episodes,
+          score: req.body.score,
           status: req.body.status,
           time,
         }

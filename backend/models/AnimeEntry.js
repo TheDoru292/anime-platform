@@ -5,6 +5,7 @@ const AnimeEntrySchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
   anime: { type: Schema.Types.ObjectId, ref: "Anime" },
   episodes: { type: Number },
+  score: { type: Number },
   status: { type: String },
   time: { type: Number },
 });

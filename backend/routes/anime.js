@@ -8,6 +8,15 @@ router.get("/:animeId", anime.get);
 
 router.delete("/:animeId", anime.delete);
 
+router.put(
+  "/:animeId",
+  checks.checkAnimeType,
+  checks.checkAnimeGenres,
+  checks.checkAnimeThemes,
+  checks.checkAnimeRelations,
+  anime.edit
+);
+
 router.post(
   "/",
   checks.checkAnimeType,

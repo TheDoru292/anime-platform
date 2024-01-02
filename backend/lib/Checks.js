@@ -7,6 +7,7 @@ const Manga = require("../models/Manga");
 const MangaGenre = require("../models/MangaGenre");
 const MangaType = require("../models/MangaType");
 const MangaTheme = require("../models/MangaTheme");
+const Favorite = require("../models/Favorite");
 
 exports.checkAnimeType = (req, res, next) => {
   if (req.body.type) {
@@ -256,6 +257,22 @@ exports.checkMangaExists = (req, res, next) => {
         return res
           .status(400)
           .json({ success: false, status: "Manga doesn't exist." });
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.checkAnimeFavorited = (req, res, next) => {
+  Favorite.findOne({ user: req.user._id, anime: req.params.animeId })
+    .then((favorite) => {
+      if (favorite) {
+        req.animeFavorited = true;
+      } else {
+        req.animeFavorited = false;
       }
 
       next();

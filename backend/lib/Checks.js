@@ -3,6 +3,7 @@ const Genre = require("../models/AnimeGenre");
 const Theme = require("../models/AnimeTheme");
 const Anime = require("../models/Anime");
 const AnimeEntry = require("../models/AnimeEntry");
+const Manga = require("../models/Manga");
 const MangaGenre = require("../models/MangaGenre");
 const MangaType = require("../models/MangaType");
 const MangaTheme = require("../models/MangaTheme");
@@ -246,4 +247,20 @@ exports.checkMangaRelations = (req, res, next) => {
   }
 
   next();
+};
+
+exports.checkMangaExists = (req, res, next) => {
+  Manga.findOne({ _id: req.params.mangaId })
+    .then((manga) => {
+      if (!manga) {
+        return res
+          .status(400)
+          .json({ success: false, status: "Manga doesn't exist." });
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

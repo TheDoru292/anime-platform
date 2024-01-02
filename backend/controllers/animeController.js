@@ -57,3 +57,13 @@ exports.get = (req, res) => {
       console.log(err);
     });
 };
+
+exports.delete = (req, res) => {
+  Anime.deleteOne({ _id: req.params.animeId })
+    .then((anime) => {
+      return res.json({ success: true, message: "Anime deleted" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

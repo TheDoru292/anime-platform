@@ -6,6 +6,8 @@ const checks = require("../lib/Checks");
 
 router.get("/:animeId", anime.get);
 
+router.delete("/:animeId", anime.delete);
+
 router.post(
   "/",
   checks.checkAnimeType,

@@ -41,3 +41,13 @@ exports.create = [
       });
   },
 ];
+
+exports.delete = (req, res) => {
+  Manga.deleteOne({ _id: req.params.mangaId })
+    .then((manga) => {
+      return res.json({ success: true, status: "Manga deleted." });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

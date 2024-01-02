@@ -2,6 +2,7 @@ const Type = require("../models/AnimeType");
 const Genre = require("../models/AnimeGenre");
 const Theme = require("../models/AnimeTheme");
 const Anime = require("../models/Anime");
+const AnimeEntry = require("../models/AnimeEntry");
 
 exports.checkAnimeType = (req, res, next) => {
   if (req.body.type) {
@@ -112,4 +113,37 @@ exports.checkAnimeEntryStatus = (req, res, next) => {
   } else {
     return res.json({ success: false, message: "Please check the status!" });
   }
+};
+
+exports.checkAnimeExists = (req, res, next) => {
+  Anime.findOne({ _id: req.params.animeId })
+    .then((anime) => {
+      if (!anime) {
+        return res
+          .status(400)
+          .json({ success: false, status: "Anime doesn't exist." });
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.checkAnimeEntryExists = (req, res, next) => {
+  AnimeEntry.findOne({ user: req.user, anime: req.params.animeId })
+    .then((animeEntry) => {
+      if (animeEntry) {
+        req.animeEntryExists = true;
+      }
+      {
+        req.animeEntryExists = false;
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

@@ -17,7 +17,7 @@ router.post(
 
 router.get("/:animeId", anime.get);
 
-router.delete("/:animeId", anime.delete);
+router.delete("/:animeId", checks.checkAnimeExists, anime.delete);
 
 router.put(
   "/:animeId",

@@ -46,4 +46,20 @@ router.delete(
   anime.deleteEntry
 );
 
+router.post(
+  "/:animeId/favorite",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkAnimeFavorited,
+  anime.favoriteAnime
+);
+
+router.delete(
+  "/:animeId/favorite",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkAnimeFavorited,
+  anime.removeFavoriteAnime
+);
+
 module.exports = router;

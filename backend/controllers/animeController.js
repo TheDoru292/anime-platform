@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 
 const Anime = require("../models/Anime");
 const AnimeEntry = require("../models/AnimeEntry");
+const Favorite = require("../models/Favorite");
 
 exports.create = [
   body("title").trim().isLength({ min: 1 }).escape(),
@@ -193,5 +194,54 @@ exports.deleteEntry = (req, res, next) => {
     return res
       .status(400)
       .json({ success: false, status: "Anime entry does not exist" });
+  }
+};
+
+exports.favoriteAnime = async (req, res, next) => {
+  if (!req.animeFavorited) {
+    const count = await Favorite.countDocuments({
+      user: req.user._id,
+      anime: { $ne: null },
+    })
+      .then((count) => {
+        return count;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (count <= 10) {
+      Favorite.create({ user: req.user._id, anime: req.params.animeId })
+        .then((favorite) => {
+          return res.json({ success: true, message: "Anime favorited." });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return res.json({
+        success: false,
+        message: "You can't have more than 10 anime favorited.",
+      });
+    }
+  } else {
+    return res.json({ success: false, message: "Anime already favorited." });
+  }
+};
+
+exports.removeFavoriteAnime = (req, res) => {
+  if (req.animeFavorited) {
+    Favorite.deleteOne({ user: req.user._id, anime: req.params.animeId })
+      .then(() => {
+        return res.json({
+          success: true,
+          status: "Anime removed from favorites.",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    return res.json({ success: false, status: "Anime isn't favorited." });
   }
 };

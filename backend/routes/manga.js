@@ -15,6 +15,8 @@ router.post(
   manga.create
 );
 
+router.get("/:mangaId", manga.get);
+
 router.delete("/:mangaId", checks.checkMangaExists, manga.delete);
 
 module.exports = router;

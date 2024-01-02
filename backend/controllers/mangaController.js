@@ -51,3 +51,13 @@ exports.delete = (req, res) => {
       console.log(err);
     });
 };
+
+exports.get = (req, res) => {
+  Manga.findOne({ _id: req.params.mangaId })
+    .then((manga) => {
+      return res.json({ success: true, manga });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

@@ -47,3 +47,13 @@ exports.create = [
       });
   },
 ];
+
+exports.get = (req, res) => {
+  Anime.findOne({ _id: req.params.animeId })
+    .then((anime) => {
+      return res.json({ success: true, anime });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

@@ -132,12 +132,14 @@ exports.checkAnimeExists = (req, res, next) => {
 };
 
 exports.checkAnimeEntryExists = (req, res, next) => {
-  AnimeEntry.findOne({ user: req.user, anime: req.params.animeId })
+  AnimeEntry.findOne({
+    user: req.user._id,
+    anime: req.params.animeId,
+  })
     .then((animeEntry) => {
       if (animeEntry) {
         req.animeEntryExists = true;
-      }
-      {
+      } else {
         req.animeEntryExists = false;
       }
 

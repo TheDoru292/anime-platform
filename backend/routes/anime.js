@@ -1,8 +1,19 @@
 const express = require("express");
+const passport = require("passport");
 const router = express.Router();
+require("../passport");
 
 const anime = require("../controllers/animeController");
 const checks = require("../lib/Checks");
+
+router.post(
+  "/",
+  checks.checkAnimeType,
+  checks.checkAnimeGenres,
+  checks.checkAnimeThemes,
+  checks.checkAnimeRelations,
+  anime.create
+);
 
 router.get("/:animeId", anime.get);
 
@@ -18,12 +29,12 @@ router.put(
 );
 
 router.post(
-  "/",
-  checks.checkAnimeType,
-  checks.checkAnimeGenres,
-  checks.checkAnimeThemes,
-  checks.checkAnimeRelations,
-  anime.create
+  "/:animeId/entry",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkAnimeEntryExists,
+  checks.checkAnimeEntryStatus,
+  anime.addEntry
 );
 
 module.exports = router;

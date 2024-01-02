@@ -170,3 +170,22 @@ exports.addEntry = [
     }
   },
 ];
+
+exports.deleteEntry = (req, res, next) => {
+  if (req.animeEntryExists) {
+    AnimeEntry.deleteOne({
+      user: req.user._id,
+      anime: req.params.animeId,
+    })
+      .then((animeEntry) => {
+        return res.json({ success: true, status: "Anime entry deleted." });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    return res
+      .status(400)
+      .json({ success: false, status: "Anime entry does not exist" });
+  }
+};

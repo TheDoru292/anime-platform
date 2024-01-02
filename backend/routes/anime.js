@@ -37,4 +37,13 @@ router.post(
   anime.addEntry
 );
 
+router.delete(
+  "/:animeId/entry",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkAnimeEntryExists,
+  checks.checkAnimeEntryStatus,
+  anime.deleteEntry
+);
+
 module.exports = router;

@@ -97,3 +97,19 @@ exports.checkAnimeRelations = (req, res, next) => {
 
   next();
 };
+
+exports.checkAnimeEntryStatus = (req, res, next) => {
+  const statuses = [
+    "Watching",
+    "Completed",
+    "On-Hold",
+    "Dropped",
+    "Plan to Watch",
+  ];
+
+  if (statuses.includes(req.body.status)) {
+    next();
+  } else {
+    return res.json({ success: false, message: "Please check the status!" });
+  }
+};

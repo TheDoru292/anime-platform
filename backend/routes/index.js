@@ -15,6 +15,7 @@ const animeThemeRouter = require("./animetheme");
 const animeRouter = require("./anime");
 const mangaTypeRouter = require("./mangatype");
 const mangaGenreRouter = require("./mangagenre");
+const mangaThemeRouter = require("./mangatheme");
 
 router.use("/auth", authRouter);
 
@@ -29,5 +30,7 @@ router.use("/anime-theme", animeThemeRouter);
 router.use("/manga-type", mangaTypeRouter);
 
 router.use("/manga-genre", mangaGenreRouter);
+
+router.use("/manga-theme", mangaThemeRouter);
 
 module.exports = router;

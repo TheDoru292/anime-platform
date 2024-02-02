@@ -17,6 +17,7 @@ const AnimeSchema = new Schema({
   alternativeTitles: { type: Object },
   airDate: { type: Object },
   relations: { type: Object },
+  themes: { type: Object },
 });
 
 module.exports = mongoose.model("Anime", AnimeSchema);

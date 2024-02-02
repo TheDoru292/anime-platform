@@ -8,6 +8,8 @@ const MangaGenre = require("../models/MangaGenre");
 const MangaType = require("../models/MangaType");
 const MangaTheme = require("../models/MangaTheme");
 const Favorite = require("../models/Favorite");
+const Review = require('../models/Review');
+const ReviewReaction = require('../models/ReviewReaction');
 
 exports.checkAnimeType = (req, res, next) => {
   if (req.body.type) {
@@ -281,3 +283,91 @@ exports.checkAnimeFavorited = (req, res, next) => {
       console.log(err);
     });
 };
+
+exports.checkUserReviewed = (req, res, next) => {
+  Review.findOne(
+    {
+      user: req.user,
+      anime: req.params.animeId ? req.params.animeId : null,
+      manga: req.params.mangaId ? req.params.mangaId : null,
+    }
+  ).then((review) => {
+    if (review) {
+      req.reviewed = true;
+    } else {
+      req.reviewed = false;
+    }
+
+    next();
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+exports.checkUserPostedReview = (req, res, next) => {
+  Review.findOne(
+    {
+      _id: req.params.reviewId
+    }
+  ).then((review) => {
+    if (review.user === req.user) {
+      req.reviewOwner = true;
+    } else {
+      req.reviewOwner = false;
+    }
+
+    next();
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+exports.checkUserReactedReview = (req, res, next) => {
+  ReviewReaction.findOne(
+    {
+      user: req.user,
+      review: req.params.reviewId,
+    }
+  ).then((review) => {
+    if (review.user === req.user) {
+      req.reviewReactOwner = true;
+    } else {
+      req.reviewReactOwner = false;
+    }
+
+    next();
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+exports.checkReviewExists = (req, res, next) => {
+  Review.findOne({ _id: req.params.reviewId })
+    .then((review) => {
+      if (!review) {
+        res.status(404).json({ success: false, status: "Review doesn't exist" })
+      }
+
+      next()
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+exports.checkReviewReactionExists = (req, res, next) => {
+  ReviewReaction.findOne({ review: req.params.reviewId, user: req.user })
+    .then((reviewReaction) => {
+      if (reviewReaction) {
+        req.react = reviewReaction;
+        req.reacted = true;
+      } else {
+        req.reacted = false;
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}

@@ -4,6 +4,7 @@ const router = express.Router();
 require("../passport");
 
 const anime = require("../controllers/animeController");
+const review = require('../controlers/reviewController');
 const checks = require("../lib/Checks");
 
 router.post(
@@ -61,5 +62,61 @@ router.delete(
   checks.checkAnimeFavorited,
   anime.removeFavoriteAnime
 );
+
+router.get(
+  "/:animeId/review",
+  checks.checkAnimeExists,
+  review.getAll
+)
+
+router.get(
+  "/:animeId/review/:reviewId",
+  checks.checkAnimeExists,
+  checks.checkReviewExists,
+  review.get,
+)
+
+router.post(
+  "/:animeId/review",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkUserReviewed,
+  review.create,
+);
+
+router.put(
+  "/:animeId/review/:reviewId",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkReviewExists,
+  checks.checkUserPostedReview,
+  review.edit,
+)
+
+router.delete(
+  "/:animeId/review/:reviewId",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkReviewExists,
+  checks.checkUserPostedReview,
+  review.delete,
+)
+
+router.post(
+  "/:animeId/review/:reviewId/react",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkAnimeExists,
+  checks.checkReviewExists,
+  checks.checkReviewReactionExists,
+  review.react,
+)
+
+router.delete(
+  "/:animeId/review/:reviewId",
+  passport.authenticate("jwt", { session: false }),
+  checks.checkReviewReactionExists,
+  checks.checkUserReactedReview,
+  review.removeReact,
+)
 
 module.exports = router;

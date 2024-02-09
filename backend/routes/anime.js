@@ -5,6 +5,7 @@ require("../passport");
 
 const anime = require("../controllers/animeController");
 const review = require('../controlers/reviewController');
+const stats = require('../controllers/statsController');
 const checks = require("../lib/Checks");
 
 router.post(
@@ -27,6 +28,12 @@ router.put(
   checks.checkAnimeThemes,
   checks.checkAnimeRelations,
   anime.edit
+);
+
+router.get(
+  '/:animeId/stats',
+  checks.checkAnimeExists,
+  stats.getAnimeStats,
 );
 
 router.post(

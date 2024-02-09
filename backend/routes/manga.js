@@ -30,6 +30,12 @@ router.put(
   manga.edit,
 );
 
+router.get(
+  '/:mangaId/stats',
+  checks.checkMangaExists,
+  stats.getMangaStats,
+);
+
 router.post(
   "/:mangaId/entry",
   passport.authenticate("jwt", { session: false }),

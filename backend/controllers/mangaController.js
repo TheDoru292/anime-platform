@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 
 const Manga = require("../models/Manga");
 const MangaEntry = require('../models/MangaEntry');
+const Chapter = require('../models/Chapter');
 
 exports.create = [
   body("title").trim().isLength({ min: 1 }).escape(),
@@ -226,4 +227,19 @@ exports.remoteFavorite = (req, res) => {
   } else {
     return res.json({ success: false, status: "Manga isn't favorited." });
   }
+};
+
+exports.getChapterList = (req, res) => {
+  Chapter.aggregate([
+    {
+      $match: { manga: req.params.mangaId }
+    },
+    {
+      $sort: { chapterNumber: 1 }
+    }
+  ]).then((chapters) => {
+    return res.status({ success: true, chapters });
+  }).catch((err) => {
+    console.log(err);
+  })
 };

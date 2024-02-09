@@ -37,6 +37,18 @@ router.get(
 );
 
 router.post(
+  "/:mangaId/favorite",
+  checks.checkMangaFavorited,
+  manga.favorite,
+);
+
+router.delete(
+  "/:mangaId/favorite",
+  checks.checkMangaFavorited,
+  manga.removeFavorite,
+)
+
+router.post(
   "/:mangaId/entry",
   passport.authenticate("jwt", { session: false }),
   checks.checkMangaExists,

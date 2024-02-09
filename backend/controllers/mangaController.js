@@ -178,3 +178,52 @@ exports.deleteEntry = (req, res) => {
       .json({ success: false, status: "Manga entry does not exist" });
   }
 }
+
+exports.favorite = async (req, res, next) => {
+  if (!req.mangaFavorited) {
+    const count = await Favorite.countDocuments({
+      user: req.user._id,
+      manga: { $ne: null },
+    })
+      .then((count) => {
+        return count;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (count <= 10) {
+      Favorite.create({ user: req.user._id, manga: req.params.mangaId })
+        .then((favorite) => {
+          return res.json({ success: true, message: "Manga favorited." });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return res.json({
+        success: false,
+        message: "You can't have more than 10 anime favorited.",
+      });
+    }
+  } else {
+    return res.json({ success: false, message: "Manga already favorited." });
+  }
+};
+
+exports.remoteFavorite = (req, res) => {
+  if (req.mangaFavorited) {
+    Favorite.deleteOne({ user: req.user._id, manga: req.params.mangaId })
+      .then(() => {
+        return res.json({
+          success: true,
+          status: "Manga removed from favorites.",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    return res.json({ success: false, status: "Manga isn't favorited." });
+  }
+};

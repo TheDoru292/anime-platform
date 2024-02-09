@@ -407,3 +407,19 @@ exports.checkMangaEntryStatus = (req, res, next) => {
     return res.json({ success: false, message: "Please check the status!" });
   }
 };
+
+exports.checkMangaFavorited = (req, res, next) => {
+  Favorite.findOne({ user: req.user._id, manga: req.params.mangaId })
+    .then((favorite) => {
+      if (favorite) {
+        req.mangaFavorited = true;
+      } else {
+        req.mangaFavorited = false;
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

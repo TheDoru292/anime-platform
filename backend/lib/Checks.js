@@ -10,6 +10,7 @@ const MangaTheme = require("../models/MangaTheme");
 const Favorite = require("../models/Favorite");
 const Review = require('../models/Review');
 const ReviewReaction = require('../models/ReviewReaction');
+const MangaEntry = require('../models/MangaEntry');
 
 exports.checkAnimeType = (req, res, next) => {
   if (req.body.type) {
@@ -371,3 +372,38 @@ exports.checkReviewReactionExists = (req, res, next) => {
       console.log(err);
     })
 }
+
+exports.checkMangaEntryExists = (req, res, next) => {
+  MangaEntry.findOne({
+    user: req.user._id,
+    manga: req.params.mangaId,
+  })
+    .then((mangaEntry) => {
+      if (mangaEntry) {
+        req.mangaEntryExists = true;
+      } else {
+        req.mangaEntryExists = false;
+      }
+
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.checkMangaEntryStatus = (req, res, next) => {
+  const statuses = [
+    "Reading",
+    "Completed",
+    "On-Hold",
+    "Dropped",
+    "Plan to Read",
+  ];
+
+  if (statuses.includes(req.body.status)) {
+    next();
+  } else {
+    return res.json({ success: false, message: "Please check the status!" });
+  }
+};

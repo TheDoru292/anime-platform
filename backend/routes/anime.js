@@ -67,14 +67,14 @@ router.get(
   "/:animeId/review",
   checks.checkAnimeExists,
   review.getAll
-)
+);
 
 router.get(
   "/:animeId/review/:reviewId",
   checks.checkAnimeExists,
   checks.checkReviewExists,
   review.get,
-)
+);
 
 router.post(
   "/:animeId/review",
@@ -91,7 +91,7 @@ router.put(
   checks.checkReviewExists,
   checks.checkUserPostedReview,
   review.edit,
-)
+);
 
 router.delete(
   "/:animeId/review/:reviewId",
@@ -100,7 +100,7 @@ router.delete(
   checks.checkReviewExists,
   checks.checkUserPostedReview,
   review.delete,
-)
+);
 
 router.post(
   "/:animeId/review/:reviewId/react",
@@ -109,14 +109,14 @@ router.post(
   checks.checkReviewExists,
   checks.checkReviewReactionExists,
   review.react,
-)
+);
 
 router.delete(
-  "/:animeId/review/:reviewId",
+  "/:animeId/review/:reviewId/react",
   passport.authenticate("jwt", { session: false }),
   checks.checkReviewReactionExists,
   checks.checkUserReactedReview,
   review.removeReact,
-)
+);
 
 module.exports = router;

@@ -4,11 +4,15 @@ const { body, validationResult } = require('express-validator');
 const async = require('async');
 
 const AnimeEntry = require('../models/AnimeEntry.js');
+const MangaEntry = require('../models/MangaEntry.js');
 const Review = require('../models/Review.js');
 const ReviewReaction = require('../models/ReviewReaction.js');
 
 exports.get = async (req, res, next) => {
-    const review = await getReview(req.params.reviewId)    
+    const review = await getReview(
+        req.params.reviewId,
+        req.params.animeId
+    );
 
     return res.status(200).json({success: true, review});
 }
@@ -25,7 +29,7 @@ exports.getAll = (req, res, next) => {
         async.each(
             review.docs,
             async (review, callback) => {
-                const review = await getReview(review._id);
+                const review = await getReview(review._id, req.params.animeId);
 
                 reviews.push(review);
 
@@ -48,7 +52,7 @@ exports.getUserReviews = (req, res, next) => {
             async.each(
                 review.docs,
                 async (review, callback) => {
-                    const review = await getReview(review._id);
+                    const review = await getReview(review._id, req.params.animeId);
 
                     reviews.push(review);
 
@@ -222,7 +226,7 @@ exports.delete = (req, res, next) => {
         });
 }
 
-function getReview(reviewId) {
+function getReview(reviewId, anime) {
     async.parallel([
         function(callback) {
             Review.findOne({ _id: reviewId })
@@ -240,7 +244,8 @@ function getReview(reviewId) {
                 manga: review.manga,
             }
 
-            AnimeEntry.findOne(obj, 'episodes score')
+            if (anime) {
+                AnimeEntry.findOne(obj, 'episodes score')
                 .then((entry) => {
                     const result = {
                         review,
@@ -252,6 +257,19 @@ function getReview(reviewId) {
                 .catch((err) => {
                     callback(err)
                 });
+            } else {
+                MangaEntry.findOne(obj, 'chapters score')
+                .then((entry) => {
+                    const result = {
+                        review,
+                        entryData: entry
+                    };
+
+                    callback(null, result);
+                }).catch((err) => {
+                    callback(err);
+                })
+            }
         }, (err, result) => {
             if (err) {
                 console.err(err);

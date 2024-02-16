@@ -7,6 +7,8 @@ const AnimeSchema = new Schema({
   type: { type: Schema.Types.ObjectId, ref: "AnimeType" },
   genres: [{ type: Schema.Types.ObjectId, ref: "AnimeGenre" }],
   themes: [{ type: Schema.Types.ObjectId, ref: "AnimeTheme" }],
+  producers: [{ type: Schema.Types.ObjectId, ref: "Producer" }],
+  licensors: [{ type: Schema.Types.ObjectId, ref: "Producer" }],
   status: { type: String, required: true },
   broadcast: { type: String },
   source: { type: String },

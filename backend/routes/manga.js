@@ -31,6 +31,12 @@ router.put(
 );
 
 router.get(
+  '/:mangaId/chapters',
+  checks.checkMangaExists,
+  manga.getChapterList,
+)
+
+router.get(
   '/:mangaId/stats',
   checks.checkMangaExists,
   stats.getMangaStats,

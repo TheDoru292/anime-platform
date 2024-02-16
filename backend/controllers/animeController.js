@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 const Anime = require("../models/Anime");
 const AnimeEntry = require("../models/AnimeEntry");
 const Favorite = require("../models/Favorite");
+const Episode = require("../models/Episode");
 
 exports.create = [
   body("title").trim().isLength({ min: 1 }).escape(),
@@ -245,3 +246,19 @@ exports.removeFavoriteAnime = (req, res) => {
     return res.json({ success: false, status: "Anime isn't favorited." });
   }
 };
+
+exports.getEpisodeList = (req, res) => {
+  Episode.aggregate([
+    {
+      $match: { anime: req.params.animeId }
+    },
+    {
+      $sort: { chapterNumber: 1 }
+    }
+  ]).then((episodes) => {
+    return res.status({ success: true, episodes });
+  }).catch((err) => {
+    console.log(err);
+  })
+};
+

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const AnimeEntrySchema = new Schema({
+const MangaEntrySchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "User" },
   manga: { type: Schema.Types.ObjectId, ref: "Manga" },
   chapters: { type: Number },
@@ -11,4 +11,4 @@ const AnimeEntrySchema = new Schema({
   time: { type: Number },
 });
 
-module.exports = mongoose.model("AnimeEntry", AnimeEntrySchema);
+module.exports = mongoose.model("MangaEntry", MangaEntrySchema);

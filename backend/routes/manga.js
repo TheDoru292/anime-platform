@@ -4,7 +4,8 @@ const router = express.Router();
 require("../passport");
 
 const manga = require("../controllers/mangaController");
-const review = require('../controllers/reviewController');
+const review = require("../controllers/reviewController");
+const stats = require("../controllers/statsController");
 const checks = require("../lib/Checks");
 
 router.post(
@@ -27,26 +28,18 @@ router.put(
   checks.checkMangaGenres,
   checks.checkMangaThemes,
   checks.checkMangaRelations,
-  manga.edit,
+  manga.edit
 );
 
-router.get(
-  '/:mangaId/stats',
-  checks.checkMangaExists,
-  stats.getMangaStats,
-);
+router.get("/:mangaId/stats", checks.checkMangaExists, stats.getMangaStats);
 
-router.post(
-  "/:mangaId/favorite",
-  checks.checkMangaFavorited,
-  manga.favorite,
-);
+router.post("/:mangaId/favorite", checks.checkMangaFavorited, manga.favorite);
 
 router.delete(
   "/:mangaId/favorite",
   checks.checkMangaFavorited,
-  manga.removeFavorite,
-)
+  manga.removeFavorite
+);
 
 router.post(
   "/:mangaId/entry",
@@ -66,17 +59,13 @@ router.delete(
   manga.deleteEntry
 );
 
-router.get(
-  "/:mangaId/review",
-  checks.checkMangaExists,
-  review.getAll
-);
+router.get("/:mangaId/review", checks.checkMangaExists, review.getAll);
 
 router.get(
   "/:mangaId/review/:reviewId",
   checks.checkMangaExists,
   checks.checkReviewExists,
-  review.get,
+  review.get
 );
 
 router.post(
@@ -84,7 +73,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   checks.checkMangaExists,
   checks.checkUserReviewed,
-  review.create,
+  review.create
 );
 
 router.put(
@@ -93,7 +82,7 @@ router.put(
   checks.checkMangaExists,
   checks.checkReviewExists,
   checks.checkUserPostedReview,
-  review.edit,
+  review.edit
 );
 
 router.post(
@@ -102,7 +91,7 @@ router.post(
   checks.checkMangaExists,
   checks.checkReviewExists,
   checks.checkReviewReactionExists,
-  review.react,
+  review.react
 );
 
 router.delete(
@@ -110,7 +99,7 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   checks.checkReviewReactionExists,
   checks.checkUserReactedReview,
-  review.removeReact,
+  review.removeReact
 );
 
 module.exports = router;

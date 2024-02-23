@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/TheDoru292/anime-platform#readme",
   "dependencies": {
+    "async": "^3.2.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",

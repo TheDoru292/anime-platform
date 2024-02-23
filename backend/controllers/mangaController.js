@@ -1,8 +1,8 @@
 const { body, validationResult } = require("express-validator");
 
 const Manga = require("../models/Manga");
-const MangaEntry = require('../models/MangaEntry');
-const Chapter = require('../models/Chapter');
+const MangaEntry = require("../models/MangaEntry");
+const Chapter = require("../models/Chapter");
 
 exports.create = [
   body("title").trim().isLength({ min: 1 }).escape(),
@@ -101,7 +101,7 @@ exports.edit = [
       .catch((err) => {
         console.log(err);
       });
-  }
+  },
 ];
 
 exports.addEntry = [
@@ -136,7 +136,7 @@ exports.addEntry = [
       status: req.body.status,
       score: req.body.score,
       time,
-    }
+    };
 
     if (!req.mangaEntryExists) {
       MangaEntry.create(obj)
@@ -147,10 +147,7 @@ exports.addEntry = [
           console.log(err);
         });
     } else {
-      MangaEntry.updateOne(
-        { user: req.user, manga: req.params.mangaId },
-        obj
-      )
+      MangaEntry.updateOne({ user: req.user, manga: req.params.mangaId }, obj)
         .then((mangaEntry) => {
           return res.json({ success: true, status: "Manga entry updated." });
         })
@@ -178,7 +175,7 @@ exports.deleteEntry = (req, res) => {
       .status(400)
       .json({ success: false, status: "Manga entry does not exist" });
   }
-}
+};
 
 exports.favorite = async (req, res, next) => {
   if (!req.mangaFavorited) {
@@ -212,7 +209,7 @@ exports.favorite = async (req, res, next) => {
   }
 };
 
-exports.remoteFavorite = (req, res) => {
+exports.removeFavorite = (req, res) => {
   if (req.mangaFavorited) {
     Favorite.deleteOne({ user: req.user._id, manga: req.params.mangaId })
       .then(() => {
@@ -232,14 +229,16 @@ exports.remoteFavorite = (req, res) => {
 exports.getChapterList = (req, res) => {
   Chapter.aggregate([
     {
-      $match: { manga: req.params.mangaId }
+      $match: { manga: req.params.mangaId },
     },
     {
-      $sort: { chapterNumber: 1 }
-    }
-  ]).then((chapters) => {
-    return res.status({ success: true, chapters });
-  }).catch((err) => {
-    console.log(err);
-  })
+      $sort: { chapterNumber: 1 },
+    },
+  ])
+    .then((chapters) => {
+      return res.status({ success: true, chapters });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

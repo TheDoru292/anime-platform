@@ -4,8 +4,8 @@ const router = express.Router();
 require("../passport");
 
 const anime = require("../controllers/animeController");
-const review = require('../controlers/reviewController');
-const stats = require('../controllers/statsController');
+const review = require("../controllers/reviewController");
+const stats = require("../controllers/statsController");
 const checks = require("../lib/Checks");
 
 router.post(
@@ -30,11 +30,7 @@ router.put(
   anime.edit
 );
 
-router.get(
-  '/:animeId/stats',
-  checks.checkAnimeExists,
-  stats.getAnimeStats,
-);
+router.get("/:animeId/stats", checks.checkAnimeExists, stats.getAnimeStats);
 
 router.post(
   "/:animeId/entry",
@@ -70,17 +66,13 @@ router.delete(
   anime.removeFavoriteAnime
 );
 
-router.get(
-  "/:animeId/review",
-  checks.checkAnimeExists,
-  review.getAll
-);
+router.get("/:animeId/review", checks.checkAnimeExists, review.getAll);
 
 router.get(
   "/:animeId/review/:reviewId",
   checks.checkAnimeExists,
   checks.checkReviewExists,
-  review.get,
+  review.get
 );
 
 router.post(
@@ -88,7 +80,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   checks.checkAnimeExists,
   checks.checkUserReviewed,
-  review.create,
+  review.create
 );
 
 router.put(
@@ -97,7 +89,7 @@ router.put(
   checks.checkAnimeExists,
   checks.checkReviewExists,
   checks.checkUserPostedReview,
-  review.edit,
+  review.edit
 );
 
 router.delete(
@@ -106,7 +98,7 @@ router.delete(
   checks.checkAnimeExists,
   checks.checkReviewExists,
   checks.checkUserPostedReview,
-  review.delete,
+  review.delete
 );
 
 router.post(
@@ -115,7 +107,7 @@ router.post(
   checks.checkAnimeExists,
   checks.checkReviewExists,
   checks.checkReviewReactionExists,
-  review.react,
+  review.react
 );
 
 router.delete(
@@ -123,7 +115,7 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   checks.checkReviewReactionExists,
   checks.checkUserReactedReview,
-  review.removeReact,
+  review.removeReact
 );
 
 module.exports = router;

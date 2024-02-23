@@ -31,6 +31,8 @@ router.put(
   manga.edit
 );
 
+router.get("/:mangaId/chapters", checks.checkMangaExists, manga.getChapterList);
+
 router.get("/:mangaId/stats", checks.checkMangaExists, stats.getMangaStats);
 
 router.post("/:mangaId/favorite", checks.checkMangaFavorited, manga.favorite);

@@ -6,6 +6,7 @@ const FavoriteSchema = new Schema({
   anime: { type: Schema.Types.ObjectId, ref: "Anime" },
   manga: { type: Schema.Types.ObjectId, ref: "Manga" },
   character: { type: Schema.Types.ObjectId, ref: "Character" },
+  person: { type: Schema.Types.ObjetId, ref: "People" },
 });
 
 module.exports = mongoose.model("Favorite", FavoriteSchema);

@@ -30,6 +30,8 @@ router.put(
   anime.edit
 );
 
+router.get("/:animeId/episodes", checks.checkAnimeExists, anime.getEpisodeList);
+
 router.get("/:animeId/stats", checks.checkAnimeExists, stats.getAnimeStats);
 
 router.post(
